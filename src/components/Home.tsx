@@ -1,10 +1,10 @@
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
   const { currentUser, login, signup, loginWithGoogle, logout } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -30,6 +30,7 @@ const Home = () => {
     if (currentUser) {
       const userRef = doc(db, 'users', currentUser.uid);
       await updateDoc(userRef, { favoriteRecipes: arrayUnion(recipe) });
+      props.setFavorites((oldFavorites: any) => [...oldFavorites, recipe]);
     }
   };
 
