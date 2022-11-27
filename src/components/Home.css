@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: darkcyan;
+  font-size: 30px;
+  font-weight: 600;
+  background-color: #f1f1f1;
+  overflow: hidden;
+  padding: 20px 10px;
+  margin-left: 300px;
+}
+
+#recipeIcon {
+  padding: 5px;
+  width: 100px;
+  height: 100px;
+}
+
+body {
+  background-color: linen;
+  width: 80vw;
+  height: 100vh;
+}
+
+.section {
+  width: 80vw;
+  height: 20vh;
+  background-color: #62b16e;
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  margin-left: 200px;
+}
+
+.one,
+.three {
+  background-color: #273225;
+}
+
+.nav {
+  width: 80vw;
+  height: 30vh;
+  background-color: #3944f7;
+  font-size: x-large;
+  color: white;
+  text-align: center;
+  margin-left: 200px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  place-items: center;
+}
+
+.btn {
+  color: white;
+  background-color: #38cc77;
+  height: 40px;
+  width: 90px;
+  padding: 2px;
+  border: 2px solid black;
+  text-decoration: none;
+}
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: powderblue;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a,
+.dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* CSS */
+#logout-button {
+  appearance: none;
+  background-color: #fafbfc;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292e;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+#logout-button:hover {
+  background-color: #f3f4f6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+#logout-button:disabled {
+  background-color: #fafbfc;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959da5;
+  cursor: default;
+}
+
+#logout-button:active {
+  background-color: #edeff2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+#logout-button:focus {
+  outline: 1px transparent;
+}
+
+#logout-button:before {
+  display: none;
+}
+
+#logout-button:-webkit-details-marker {
+  display: none;
+}
