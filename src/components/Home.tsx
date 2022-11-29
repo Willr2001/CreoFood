@@ -2,18 +2,19 @@ import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { db } from '../firebase';
-import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import SideNav from './SideNav';
+import Dialog from '@mui/material/Dialog';
 
 const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
-  const { currentUser, login, signup, loginWithGoogle, logout } = useAuth();
+  const { currentUser, login, signup, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [input, setInput] = useState<string>('');
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [results, setResults] = useState<any[]>([]);
-
-  const navigate = useNavigate();
+  const [steps, setSteps] = useState<any>();
+  const [recipeDetailsPopupOpen, setRecipeDetailsPopupOpen] = useState<boolean>(false);
 
   const fetchRecipes = () => {
     const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients.join(
@@ -27,6 +28,13 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
     setIngredients([]);
   };
 
+  const fetchSteps = (id: string) => {
+    const url = `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=ec68f3677ed5443288d50ba50601c5e5`;
+    fetch(url)
+      .then((res) => res.json())
+      .then(setSteps);
+  };
+
   const addFavorite = async (recipe: any) => {
     if (currentUser) {
       const userRef = doc(db, 'users', currentUser.uid);
@@ -35,110 +43,70 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
     }
   };
 
+  console.log(steps);
+
   return currentUser ? (
     <div>
       <header>
         <img src="..\icons\recipeIcon.png" alt="receipeIcon"></img>
         <h1>CreoFood</h1>
       </header>
-
-      <div className="nav">
-        <a href="#section1" className="btn">
-          Meat
-        </a>
-        <a href="#section2" className="btn">
-          Veggies
-        </a>
-        <a href="#section3" className="btn">
-          Oils
-        </a>
-        <a href="#section4" className="btn">
-          Fish
-        </a>
-      </div>
-      <div className="section one" id="section1">
-        Meats
-        <img
-          src="https://img.icons8.com/external-justicon-flat-justicon/64/null/external-meat-cooking-justicon-flat-justicon.png"
-          id="meat"
-        ></img>
-        <br></br>
-        <select name="meats" id="meats" multiple>
-          <option value="chicekn">Chicken</option>
-          <option value="lamb">Lamb</option>
-          <option value="beef">Beef</option>
-          <option value="bacon">Bacon</option>
-          <option value="pepperoni">pepperoni</option>
-        </select>
-      </div>
-      <div className="section two" id="section2">
-        Veggies<br></br>
-        <select name="veggies" id="veggies" multiple>
-          <option value="broccoli">Broccoli</option>
-          <option value="arugula">Arugula</option>
-          <option value="carrots">Carrorts</option>
-          <option value="celery">Celery</option>
-          <option value="dill">Dill</option>
-        </select>
-      </div>
-      <div className="section three" id="section3">
-        Oils<br></br>
-        <select name="oils" id="oils" multiple>
-          <option value="canoloa">canoloa</option>
-          <option value="vegetable">vegetable</option>
-          <option value="olive">olive</option>
-          <option value="avacado">avacado</option>
-        </select>
-      </div>
-      <div className="section four" id="section4">
-        Fish<br></br>
-        <select name="Fish" id="Fish" multiple>
-          <option value="salmon">Salmon</option>
-          <option value="cod">Cod</option>
-          <option value="lobster">Lobster</option>
-          <option value="crab">Crab</option>
-        </select>
-      </div>
-
-      <div className="sidenav">
-        <button id="logout-button" role="button" onClick={logout}>
-          logout
+      <SideNav />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <input value={input} onChange={(e) => setInput(e.target.value)} />
+        <button
+          onClick={() => {
+            setIngredients((oldIngredients) => [...oldIngredients, input]);
+            setInput('');
+          }}
+        >
+          Add ingredient
         </button>
-        <br></br>
-        <br></br>
-        <button id="favourite" onClick={() => navigate('/favorites')}>
-          favorites
-        </button>
-        <a href="#about">About</a>
+        <button onClick={fetchRecipes}>Get recipes</button>
+        {ingredients.map((ingredient) => {
+          return <h1 key={ingredient}>{ingredient}</h1>;
+        })}
+        <div />
       </div>
-
-      <input value={input} onChange={(e) => setInput(e.target.value)} />
-      <button
-        onClick={() => {
-          setIngredients((oldIngredients) => [...oldIngredients, input]);
-          setInput('');
-        }}
-      >
-        Add ingredient
-      </button>
-
-      <div />
-      <button onClick={fetchRecipes}>Get recipes</button>
       {results.map((result) => (
-        <div key={result.title}>
+        <div
+          key={result.title}
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            fetchSteps(result.id);
+            setRecipeDetailsPopupOpen(true);
+          }}
+        >
           <h2>{result.title}</h2>
           <img src={result.image} alt={result.title} />
           <button
-            onClick={() =>
+            onClick={() => {
               addFavorite(result)
                 .then(() => alert('favorited!'))
-                .catch(console.log)
-            }
+                .catch(console.log);
+            }}
           >
             favorite
           </button>
         </div>
       ))}
+      <Dialog
+        open={recipeDetailsPopupOpen}
+        onClose={() => {
+          setRecipeDetailsPopupOpen(false);
+          setSteps('');
+        }}
+      >
+        {steps &&
+          steps[0].steps.map((step: { number: string; step: string }) => {
+            return (
+              <div key={step.number}>
+                <h1>{step.number}</h1>
+                <p>{step.step}</p>
+              </div>
+            );
+          })}
+      </Dialog>
     </div>
   ) : (
     <>

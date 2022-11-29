@@ -1,12 +1,11 @@
 import { doc, updateDoc } from 'firebase/firestore';
 import React, { Dispatch, SetStateAction } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { db } from '../firebase';
+import SideNav from './SideNav';
 
 const Favorites = (props: { favorites: any; setFavorites: Dispatch<SetStateAction<any>> }) => {
   const { currentUser } = useAuth();
-  const navigate = useNavigate();
 
   const removeFavorite = async (recipeTitle: any) => {
     if (currentUser) {
@@ -17,9 +16,9 @@ const Favorites = (props: { favorites: any; setFavorites: Dispatch<SetStateActio
     }
   };
 
-  return props.favorites.length !== 0 ? (
+  return (
     <>
-      <button onClick={() => navigate('/')}>home</button>
+      <SideNav />
       {props.favorites.map((favorite: any) => (
         <div key={favorite.title}>
           <h2>{favorite.title}</h2>
@@ -27,11 +26,6 @@ const Favorites = (props: { favorites: any; setFavorites: Dispatch<SetStateActio
           <button onClick={() => removeFavorite(favorite.title)}>unfavorite</button>
         </div>
       ))}
-    </>
-  ) : (
-    <>
-      <button onClick={() => navigate('/')}>home</button>
-      <p>no favorites</p>
     </>
   );
 };
