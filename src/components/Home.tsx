@@ -38,7 +38,7 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
   return currentUser ? (
     <div>
       <header>
-        <img src="..\icons\recipeIcon.jpg" alt="receipeIcon"></img>
+        <img src="..\icons\recipeIcon.png" alt="receipeIcon"></img>
         <h1>CreoFood</h1>
       </header>
 
@@ -57,7 +57,12 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
         </a>
       </div>
       <div className="section one" id="section1">
-        Meats<br></br>
+        Meats
+        <img
+          src="https://img.icons8.com/external-justicon-flat-justicon/64/null/external-meat-cooking-justicon-flat-justicon.png"
+          id="meat"
+        ></img>
+        <br></br>
         <select name="meats" id="meats" multiple>
           <option value="chicekn">Chicken</option>
           <option value="lamb">Lamb</option>
@@ -99,11 +104,14 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
         <button id="logout-button" role="button" onClick={logout}>
           logout
         </button>
+        <br></br>
+        <br></br>
+        <button id="favourite" onClick={() => navigate('/favorites')}>
+          favorites
+        </button>
         <a href="#about">About</a>
-        <a href="#Favourites">Favourite Recipes</a>
       </div>
 
-      <button onClick={() => navigate('/favorites')}>favorites</button>
       <input value={input} onChange={(e) => setInput(e.target.value)} />
       <button
         onClick={() => {
@@ -113,7 +121,8 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
       >
         Add ingredient
       </button>
-      {ingredients}
+
+      <div />
       <button onClick={fetchRecipes}>Get recipes</button>
       {results.map((result) => (
         <div key={result.title}>
