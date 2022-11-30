@@ -5,6 +5,7 @@ import { db } from '../firebase';
 import './Home.css';
 import SideNav from './SideNav';
 import Dialog from '@mui/material/Dialog';
+import { color, fontFamily } from '@mui/system';
 
 const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
   const { currentUser, login, signup, loginWithGoogle } = useAuth();
@@ -48,7 +49,6 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
   return currentUser ? (
     <div>
       <header>
-        <img src="..\icons\recipeIcon.png" alt="receipeIcon"></img>
         <h1>CreoFood</h1>
       </header>
       <SideNav />
@@ -63,13 +63,18 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
           Add ingredient
         </button>
         <button onClick={fetchRecipes}>Get recipes</button>
-        {ingredients.map((ingredient) => {
-          return <h1 key={ingredient}>{ingredient}</h1>;
-        })}
+
         <div />
+      </div>
+      <div className="box">
+        <h1>Ingredient List:</h1>
+        {ingredients.map((ingredient) => {
+          return <p key={ingredient}>{ingredient}</p>;
+        })}
       </div>
       {results.map((result) => (
         <div
+          id="recipes"
           key={result.title}
           style={{ cursor: 'pointer' }}
           onClick={() => {
@@ -86,11 +91,12 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
                 .catch(console.log);
             }}
           >
-            favorite
+            Favorite
           </button>
         </div>
       ))}
       <Dialog
+        id="dialogbox"
         open={recipeDetailsPopupOpen}
         onClose={() => {
           setRecipeDetailsPopupOpen(false);

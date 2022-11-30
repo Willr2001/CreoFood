@@ -6,16 +6,17 @@ const SideNav = () => {
   const { logout } = useAuth();
   return (
     <div className="sidenav">
-      <button onClick={() => navigate('/')}>home</button>
+      <button onClick={() => navigate('/')}>Home</button>
+      <br></br>
+      <br></br>
       <button id="logout-button" onClick={logout}>
-        logout
+        Logout
       </button>
       <br></br>
       <br></br>
       <button id="favourite" onClick={() => navigate('/favorites')}>
-        favorites
+        Favorites
       </button>
-      <a href="#about">About</a>
     </div>
   );
 };

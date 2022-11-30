@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import { db } from '../firebase';
 import SideNav from './SideNav';
+import './Favourites.css';
 
 const Favorites = (props: { favorites: any; setFavorites: Dispatch<SetStateAction<any>> }) => {
   const { currentUser } = useAuth();
