@@ -103,15 +103,18 @@ const Home = (props: { setFavorites: Dispatch<SetStateAction<any>> }) => {
           setSteps('');
         }}
       >
-        {steps &&
-          steps[0].steps.map((step: { number: string; step: string }) => {
+        {steps && steps[0] ? (
+          steps[0]?.steps.map((step: { number: string; step: string }) => {
             return (
               <div key={step.number}>
                 <h1>{step.number}</h1>
                 <p>{step.step}</p>
               </div>
             );
-          })}
+          })
+        ) : (
+          <p>No steps available</p>
+        )}
       </Dialog>
     </div>
   ) : (
